@@ -36,7 +36,7 @@
   ::selection{background:var(--pink-soft);color:var(--maroon);}
 
   /* ============== shared ============== */
-  .page{max-width:1440px;margin:0 auto;width:100%;}
+  .page{width:100%;}
 
   .display{
     font-family:"Gilda Display", serif;
@@ -100,15 +100,27 @@
   .nav-pill:hover{background:rgba(58,0,0,.06);}
   .nav-pill.active{background:rgba(58,0,0,.08);font-weight:600;}
 
-  /* ============== HERO (cinematic) ============== */
+  /* ============== HERO (cinematic full-bleed) ============== */
   .hero{
-    position:relative;min-height:100vh;background:var(--pink);overflow:hidden;
+    position:relative;min-height:100vh;overflow:hidden;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     padding:140px 40px 100px;
+    background:linear-gradient(165deg, #fff5f5 0%, #ffe8e8 30%, #ffd4d4 60%, #ffc2c2 100%);
+    animation:hero-gradient 12s ease infinite alternate;
+  }
+  @keyframes hero-gradient{
+    0%{background:linear-gradient(165deg, #fff5f5 0%, #ffe8e8 30%, #ffd4d4 60%, #ffc2c2 100%);}
+    50%{background:linear-gradient(195deg, #fff0f0 0%, #ffe0e0 35%, #ffcece 65%, #ffd8d8 100%);}
+    100%{background:linear-gradient(135deg, #fff8f8 0%, #ffe4e4 25%, #ffd0d0 55%, #ffc8c8 100%);}
   }
   .hero::before{
     content:'';position:absolute;inset:0;
-    background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,228,228,.6) 0%, transparent 70%);
+    background:radial-gradient(ellipse 70% 50% at 50% 35%, rgba(255,255,255,.5) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .hero::after{
+    content:'';position:absolute;bottom:0;left:0;right:0;height:200px;
+    background:linear-gradient(to bottom, transparent, rgba(255,240,240,.8));
     pointer-events:none;
   }
   .hero .photo{
@@ -166,8 +178,14 @@
 
   /* ============== SOOO (sticky scroll reveal) ============== */
   .sooo{
-    background:var(--maroon);color:var(--pink-soft);
+    background:linear-gradient(180deg, #2a0000 0%, #3d0000 40%, #4a0008 70%, #2a0000 100%);
+    color:var(--pink-soft);
     text-align:center;position:relative;
+  }
+  .sooo::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 60% 40% at 50% 50%, rgba(120,0,20,.25) 0%, transparent 70%);
+    pointer-events:none;
   }
   .sooo-track{
     height: 360vh;
@@ -206,8 +224,14 @@
 
   /* ============== JSYK (sticky scroll reveal) ============== */
   .jsyk{
-    background:var(--pink);position:relative;
+    background:linear-gradient(175deg, #fff8f5 0%, #ffe8e0 35%, #ffd6cc 65%, #ffece8 100%);
+    position:relative;
     text-align:center;
+  }
+  .jsyk::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(circle at 70% 30%, rgba(255,180,160,.2) 0%, transparent 50%);
+    pointer-events:none;
   }
   .jsyk-track{ height: 320vh; position: relative; }
   .jsyk-stage{
@@ -237,8 +261,14 @@
 
   /* ============== CTA boyfriend (sticky scroll reveal) ============== */
   .cta-section{
-    background:#f7f5f3;position:relative;
+    background:linear-gradient(170deg, #fffdfb 0%, #f9f3ef 25%, #f5ebe5 50%, #faf5f2 80%, #fffcfa 100%);
+    position:relative;
     text-align:center;
+  }
+  .cta-section::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 50% 50% at 50% 50%, rgba(212,20,17,.04) 0%, transparent 70%);
+    pointer-events:none;
   }
   .cta-track{ height: 280vh; position: relative; }
   .cta-stage{
@@ -255,8 +285,14 @@
 
   /* ============== TO MORE FUN (sticky scroll reveal) ============== */
   .more-fun{
-    background:var(--pink);position:relative;
+    background:linear-gradient(155deg, #fff2ee 0%, #ffddd4 30%, #ffc8bb 55%, #ffe0d8 80%, #fff5f2 100%);
+    position:relative;
     text-align:center;
+  }
+  .more-fun::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(circle at 50% 50%, rgba(255,140,100,.1) 0%, transparent 60%);
+    pointer-events:none;
   }
   .fun-track{ height: 260vh; position: relative; }
   .fun-stage{
@@ -267,12 +303,18 @@
 
   /* ============== FOOTER ============== */
   .footer{
-    background:var(--maroon);color:var(--pink-soft);
-    padding:120px 53px 80px;position:relative;overflow:hidden;
-    display:flex;flex-direction:column;align-items:center;gap:80px;
+    background:linear-gradient(175deg, #1a0000 0%, #2d0000 30%, #3a0005 60%, #1a0000 100%);
+    color:var(--pink-soft);
+    padding:140px 53px 100px;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;align-items:center;gap:90px;
+  }
+  .footer::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 70% 40% at 50% 20%, rgba(100,0,15,.3) 0%, transparent 70%);
+    pointer-events:none;
   }
   .gallery{
-    width:100%;max-width:1333px;height:590px;position:relative;
+    width:100%;max-width:1440px;height:590px;position:relative;
     display:flex;justify-content:center;align-items:center;
     perspective: 1600px;
   }
@@ -332,7 +374,7 @@
   .footer .credits p{font-size:19px;line-height:30px;color:var(--pink-soft);max-width:700px;opacity:.85;}
 
   .footer .legal{
-    width:100%;max-width:1333px;border-top:1px solid var(--line);padding-top:30px;
+    width:100%;max-width:1440px;border-top:1px solid var(--line);padding-top:30px;
     display:flex;flex-direction:column;gap:24px;align-items:center;text-align:center;margin-top:40px;
   }
   .footer .legal .heart{width:54px;height:54px;display:grid;place-items:center;}
@@ -413,8 +455,14 @@
 
   /* ============== ALSOOO section ============== */
   .alsooo{
-    background:var(--pink);position:relative;
+    background:linear-gradient(160deg, #fef4f0 0%, #fce4dc 30%, #f8d0c4 60%, #fde8e2 100%);
+    position:relative;
     text-align:center;
+  }
+  .alsooo::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(circle at 30% 60%, rgba(248,160,120,.12) 0%, transparent 55%);
+    pointer-events:none;
   }
   .alsooo-track{ height: 320vh; position: relative; }
   .alsooo-stage{
@@ -432,6 +480,28 @@
     transition:opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo), filter .8s ease;
   }
   .reveal.in{opacity:1;transform:translateY(0);filter:blur(0);}
+
+  /* ============== floating orbs (ambient motion) ============== */
+  .orb{
+    position:absolute;border-radius:50%;pointer-events:none;
+    filter:blur(80px);opacity:.35;
+    animation:orb-float 14s ease-in-out infinite alternate;
+    will-change:transform;
+  }
+  .orb-1{width:500px;height:500px;background:rgba(255,120,100,.2);top:-10%;left:-5%;animation-duration:16s;}
+  .orb-2{width:400px;height:400px;background:rgba(255,180,160,.18);bottom:-10%;right:-5%;animation-delay:-6s;animation-duration:18s;}
+  .orb-3{width:350px;height:350px;background:rgba(200,0,30,.12);top:20%;right:10%;animation-delay:-3s;animation-duration:20s;}
+  @keyframes orb-float{
+    0%{transform:translate(0,0) scale(1);}
+    33%{transform:translate(30px,-20px) scale(1.05);}
+    66%{transform:translate(-20px,30px) scale(.95);}
+    100%{transform:translate(15px,-10px) scale(1.02);}
+  }
+
+  /* dark section orbs */
+  .orb-dark{opacity:.2;}
+  .orb-dark.orb-1{background:rgba(180,0,30,.25);}
+  .orb-dark.orb-2{background:rgba(120,0,40,.2);}
 
   /* ============== section dividers ============== */
   .sooo-stage::before, .jsyk-stage::before, .alsooo-stage::before, .cta-stage::before, .fun-stage::before{
@@ -493,6 +563,9 @@
       </div>
     </nav>
 
+    <div class="orb orb-1" aria-hidden="true"></div>
+    <div class="orb orb-2" aria-hidden="true"></div>
+
     <div class="photo left" aria-hidden="true"></div>
     <div class="photo right" aria-hidden="true"></div>
 
@@ -510,6 +583,8 @@
 
   <!-- SOOO — sticky scroll-driven word reveal -->
   <section class="sooo" id="sooo">
+    <div class="orb orb-dark orb-1" aria-hidden="true"></div>
+    <div class="orb orb-dark orb-2" aria-hidden="true"></div>
     <div class="sooo-track" id="sooo-track">
       <div class="sooo-stage">
         <h2 class="display" id="sooo-title">SOOOOO… HERE'S THE THING</h2>
@@ -555,6 +630,7 @@
 
   <!-- CTA — sticky scroll-driven word reveal -->
   <section class="cta-section" id="ask">
+    <div class="orb orb-3" aria-hidden="true"></div>
     <div class="cta-track" id="cta-track">
       <div class="cta-stage">
         <div style="display:flex;flex-direction:column;align-items:center;gap:24px;">
@@ -582,6 +658,8 @@
 
   <!-- FOOTER -->
   <footer class="footer" id="contact">
+    <div class="orb orb-dark orb-1" aria-hidden="true"></div>
+    <div class="orb orb-dark orb-2" aria-hidden="true"></div>
     <div class="gallery reveal">
       <div class="frame f1" style="background-image:url(assets/Testimonial-img-1.png);"></div>
       <div class="frame f2" style="background-image:url(assets/Testimonial-img-3.png);"></div>
