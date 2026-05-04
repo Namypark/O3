@@ -9,20 +9,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Inter+Tight:wght@400;500;700&family=Caveat:wght@400;600&family=Allura&display=swap" rel="stylesheet">
 <style>
   :root{
-    --pink:#ffecec;
-    --pink-soft:#ffdddd;
-    --maroon:#520000;
-    --red:#e31713;
-    --black:#000;
+    --pink:#fff0f0;
+    --pink-soft:#ffe4e4;
+    --maroon:#3a0000;
+    --red:#d41411;
+    --black:#0a0000;
     --gray:#8c8c8c;
-    --line:rgba(212,212,212,.2);
+    --line:rgba(212,212,212,.15);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.22, 0.68, 0, 1.2);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  html,body{background:#fff;color:#000;font-family:"Inter Tight",system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  html{scroll-behavior:smooth;}
+  html,body{background:#fff;color:#000;font-family:"Inter Tight",system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
   body{overflow-x:hidden;}
+  body::after{
+    content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
+    background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    background-repeat:repeat;background-size:256px 256px;
+    opacity:.5;
+    mix-blend-mode:overlay;
+  }
   img{display:block;max-width:100%;}
   a{color:inherit;text-decoration:none;}
   button{font:inherit;cursor:pointer;border:0;background:none;color:inherit;}
+  ::selection{background:var(--pink-soft);color:var(--maroon);}
 
   /* ============== shared ============== */
   .page{max-width:1440px;margin:0 auto;width:100%;}
@@ -41,48 +52,73 @@
   }
   .pill-btn{
     display:inline-flex;align-items:center;justify-content:center;
-    height:60px;padding:8px 28px;border-radius:32px;
+    height:60px;padding:8px 32px;border-radius:32px;
     background:var(--red);color:#fff;
-    font-family:"Inter Tight",sans-serif;font-weight:700;font-size:18px;letter-spacing:-0.01em;
+    font-family:"Inter Tight",sans-serif;font-weight:700;font-size:17px;letter-spacing:0.02em;text-transform:uppercase;
     border:2px solid var(--red);
-    transition:transform .15s ease, background .2s ease, box-shadow .2s ease;
-    box-shadow:0 6px 18px rgba(227,23,19,.18);
+    transition:transform .3s var(--ease-out-expo), background .2s ease, box-shadow .4s ease;
+    box-shadow:0 8px 30px -6px rgba(212,20,17,.35), 0 2px 8px rgba(212,20,17,.12);
     white-space:nowrap;
+    position:relative;overflow:hidden;
   }
-  .pill-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(227,23,19,.28);}
-  .pill-btn:active{transform:translateY(0);}
-  .pill-btn.gray{background:var(--gray);border-color:var(--gray);box-shadow:0 6px 18px rgba(140,140,140,.2);}
+  .pill-btn::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg, rgba(255,255,255,.2) 0%, transparent 50%);
+    pointer-events:none;
+  }
+  .pill-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 14px 40px -6px rgba(212,20,17,.4), 0 4px 12px rgba(212,20,17,.15);}
+  .pill-btn:active{transform:translateY(0) scale(.98);}
+  .pill-btn.gray{background:var(--gray);border-color:var(--gray);box-shadow:0 8px 24px -6px rgba(140,140,140,.3);}
 
-  /* ============== nav ============== */
+  /* ============== nav (glass) ============== */
   .nav{
-    position:absolute;top:0;left:0;right:0;height:85px;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:14px 120px;z-index:20;
+    position:fixed;top:16px;left:50%;transform:translateX(-50%);
+    width:auto;max-width:680px;height:64px;
+    display:flex;align-items:center;justify-content:space-between;gap:32px;
+    padding:8px 8px 8px 24px;z-index:50;
+    background:rgba(255,255,255,.72);
+    backdrop-filter:blur(20px) saturate(1.6);
+    -webkit-backdrop-filter:blur(20px) saturate(1.6);
+    border-radius:100px;
+    border:1px solid rgba(255,255,255,.5);
+    box-shadow:0 4px 30px rgba(58,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
+    transition:box-shadow .4s ease, background .3s ease;
   }
-  .logo{width:54px;height:54px;display:grid;place-items:center;}
-  .logo svg{width:50px;height:50px;}
+  .nav:hover{box-shadow:0 8px 40px rgba(58,0,0,.1), 0 2px 6px rgba(0,0,0,.05);}
+  .logo{width:42px;height:42px;display:grid;place-items:center;flex-shrink:0;}
+  .logo svg{width:38px;height:38px;transition:transform .3s var(--ease-out-expo);}
+  .logo:hover svg{transform:scale(1.1) rotate(-5deg);}
   .nav-pills{
-    display:flex;gap:8px;padding:8px;border-radius:48px;
-    backdrop-filter:blur(4px);
+    display:flex;gap:4px;padding:4px;border-radius:48px;
   }
   .nav-pill{
-    height:51px;padding:0 22px;border-radius:48px;
-    font-family:"Inter Tight",sans-serif;font-weight:500;font-size:16px;letter-spacing:-0.02em;
-    color:#000;display:inline-flex;align-items:center;
-    transition:background .2s;
+    height:48px;padding:0 22px;border-radius:48px;
+    font-family:"Inter Tight",sans-serif;font-weight:500;font-size:15px;letter-spacing:0.01em;
+    color:var(--maroon);display:inline-flex;align-items:center;
+    transition:background .25s ease, color .2s ease;
   }
-  .nav-pill:hover{background:rgba(0,0,0,.06);}
-  .nav-pill.active{background:rgba(0,0,0,.06);}
+  .nav-pill:hover{background:rgba(58,0,0,.06);}
+  .nav-pill.active{background:rgba(58,0,0,.08);font-weight:600;}
 
-  /* ============== HERO ============== */
+  /* ============== HERO (cinematic) ============== */
   .hero{
-    position:relative;height:884px;background:var(--pink);overflow:hidden;
+    position:relative;min-height:100vh;background:var(--pink);overflow:hidden;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:140px 40px 100px;
+  }
+  .hero::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,228,228,.6) 0%, transparent 70%);
+    pointer-events:none;
   }
   .hero .photo{
-    position:absolute;width:277px;height:291px;border-radius:4px;
+    position:absolute;width:300px;height:340px;border-radius:8px;
     background-size:cover;background-position:center;
-    box-shadow:0 30px 60px -20px rgba(82,0,0,.25);
+    box-shadow:0 40px 80px -20px rgba(58,0,0,.2), 0 12px 24px -8px rgba(58,0,0,.1);
+    transition:transform 1.5s var(--ease-out-expo), box-shadow .6s ease;
+  }
+  .hero .photo:hover{
+    box-shadow:0 50px 100px -20px rgba(58,0,0,.25), 0 16px 32px -8px rgba(58,0,0,.12);
   }
   .hero .photo.left{
     left:60px;top:136px;
@@ -90,17 +126,40 @@
     transform:rotate(-6deg);
   }
   .hero .photo.right{
-    right:60px;bottom:56px;
+    right:60px;bottom:80px;
     background-image:url(assets/hero-right.png);
     transform:rotate(5deg);
   }
   .hero .copy{
-    width:712px;text-align:center;display:flex;flex-direction:column;gap:24px;align-items:center;
+    width:760px;text-align:center;display:flex;flex-direction:column;gap:28px;align-items:center;
     position:relative;z-index:2;
   }
-  .hero h1{font-size:84px;}
-  .hero p{max-width:560px;color:#000;}
-  .hero .cta{margin-top:8px;}
+  .hero h1{font-size:88px;line-height:.95;}
+  .hero p{max-width:520px;color:var(--maroon);opacity:.7;font-size:19px;line-height:1.6;}
+  .hero .cta{margin-top:16px;}
+
+  /* cinematic char reveal on hero h1 */
+  .hero h1 .char{
+    display:inline-block;
+    opacity:0;filter:blur(12px);
+    transform:translateY(30px);
+    animation:cinematic-char .8s var(--ease-out-expo) forwards;
+  }
+  @keyframes cinematic-char{
+    0%{opacity:0;filter:blur(12px);transform:translateY(30px);}
+    50%{opacity:.7;filter:blur(4px);}
+    100%{opacity:1;filter:blur(0);transform:translateY(0);}
+  }
+  .hero p.body-text{
+    opacity:0;animation:fade-up .9s .6s var(--ease-out-expo) forwards;
+  }
+  .hero .cta{
+    opacity:0;animation:fade-up .9s .85s var(--ease-out-expo) forwards;
+  }
+  @keyframes fade-up{
+    from{opacity:0;transform:translateY(20px);filter:blur(4px);}
+    to{opacity:1;transform:translateY(0);filter:blur(0);}
+  }
 
   /* tiny floating heart sprinkles */
   .sprinkle{position:absolute;color:var(--red);opacity:.7;pointer-events:none;}
@@ -124,13 +183,14 @@
   .sooo h2{font-size:84px;max-width:760px;}
   .sooo p{max-width:640px;}
 
-  /* word reveal tokens (shared across all sticky sections) */
+  /* word reveal tokens (shared — cinematic blur) */
   .word{
-    display:inline-block; opacity: 0; transform: translateY(18px);
-    transition: opacity .35s ease, transform .35s ease;
+    display:inline-block; opacity: 0; transform: translateY(14px);
+    filter:blur(6px);
+    transition: opacity .5s var(--ease-out-expo), transform .5s var(--ease-out-expo), filter .6s ease;
     margin-right: .26em;
   }
-  .word.lit{ opacity: 1; transform: translateY(0); }
+  .word.lit{ opacity: 1; transform: translateY(0); filter:blur(0); }
 
   .sooo .progress{
     position:absolute; left: 50%; bottom: 8vh; transform:translateX(-50%);
@@ -219,9 +279,9 @@
   .gallery .frame{
     position:absolute;width:357px;height:495px;
     background-size:cover;background-position:center;
-    box-shadow:0 40px 80px -20px rgba(0,0,0,.55), 0 8px 24px rgba(0,0,0,.4);
-    border-radius:2px;
-    filter: grayscale(1) contrast(1.05) brightness(.92);
+    box-shadow:0 50px 100px -30px rgba(0,0,0,.55), 0 12px 30px rgba(0,0,0,.35);
+    border-radius:6px;
+    filter: grayscale(1) contrast(1.08) brightness(.88);
     transition:
       transform 1.1s cubic-bezier(.2,.9,.25,1),
       filter .8s ease,
@@ -243,13 +303,13 @@
   .gallery.revealed .frame.f5{transform:translateX(540px) rotate(12deg);}
 
   .gallery.revealed .frame:hover{
-    filter: grayscale(0) contrast(1) brightness(1) saturate(1.05);
-    box-shadow: 0 50px 100px -20px rgba(0,0,0,.6), 0 14px 30px rgba(0,0,0,.5);
+    filter: grayscale(0) contrast(1) brightness(1.02) saturate(1.1);
+    box-shadow: 0 60px 120px -20px rgba(0,0,0,.6), 0 16px 40px rgba(0,0,0,.4);
     z-index: 5;
     transition:
-      transform .55s cubic-bezier(.2,.9,.25,1),
-      filter .9s ease,
-      box-shadow .4s ease;
+      transform .65s var(--ease-out-expo),
+      filter 1.2s ease,
+      box-shadow .5s ease;
   }
   .gallery.revealed .frame.f1:hover{transform:translateX(-540px) rotate(-12deg) translateY(-22px) scale(1.04);}
   .gallery.revealed .frame.f2:hover{transform:translateX(-280px) rotate(-6deg) translateY(-22px) scale(1.04);}
@@ -263,12 +323,13 @@
   .gallery.revealed .frame.f1{transition-delay: .26s, 0s, 0s;}
   .gallery.revealed .frame.f5{transition-delay: .26s, 0s, 0s;}
 
-  .footer .credits{max-width:840px;text-align:center;display:flex;flex-direction:column;gap:40px;align-items:center;}
+  .footer .credits{max-width:840px;text-align:center;display:flex;flex-direction:column;gap:44px;align-items:center;}
   .footer .credits h3{
-    font-family:"Gilda Display",serif;font-weight:400;font-size:44px;line-height:1.05;letter-spacing:-0.04em;
+    font-family:"Gilda Display",serif;font-weight:400;font-size:46px;line-height:1.08;letter-spacing:-0.04em;
     color:var(--pink-soft);max-width:730px;
+    text-shadow:0 2px 40px rgba(255,228,228,.1);
   }
-  .footer .credits p{font-size:20px;line-height:28px;color:var(--pink-soft);max-width:740px;}
+  .footer .credits p{font-size:19px;line-height:30px;color:var(--pink-soft);max-width:700px;opacity:.85;}
 
   .footer .legal{
     width:100%;max-width:1333px;border-top:1px solid var(--line);padding-top:30px;
@@ -278,19 +339,119 @@
   .footer .legal .row1{font-family:"Inter Tight",sans-serif;font-weight:500;font-size:14px;color:#fff;letter-spacing:-0.005em;}
   .footer .legal .row2{font-family:"Inter Tight",sans-serif;font-weight:400;font-size:14px;color:rgba(255,255,255,.45);max-width:760px;line-height:1.7;}
 
-  /* ============== reveal anims ============== */
-  .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s ease, transform .9s ease;}
-  .reveal.in{opacity:1;transform:translateY(0);}
+  /* ============== Contact modal ============== */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:100;
+    background:rgba(82,0,0,.55);
+    backdrop-filter:blur(8px);
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;
+    transition:opacity .35s ease;
+  }
+  .modal-overlay.open{
+    opacity:1;pointer-events:auto;
+  }
+  .modal-card{
+    background:#fff;border-radius:24px;
+    padding:60px 52px;max-width:480px;width:90%;
+    text-align:center;position:relative;
+    transform:translateY(40px) scale(.92);
+    transition:transform .5s var(--ease-out-expo), opacity .4s ease;
+    opacity:0;
+    box-shadow:0 60px 120px -20px rgba(58,0,0,.35), 0 8px 24px rgba(58,0,0,.08);
+    border:1px solid rgba(255,224,224,.5);
+  }
+  .modal-overlay.open .modal-card{
+    transform:translateY(0) scale(1);
+    opacity:1;
+  }
+  .modal-close{
+    position:absolute;top:16px;right:16px;
+    width:40px;height:40px;border-radius:50%;
+    display:grid;place-items:center;
+    background:transparent;
+    transition:background .2s, transform .2s;
+    color:var(--gray);
+  }
+  .modal-close:hover{background:rgba(0,0,0,.06);transform:rotate(90deg);}
+  .modal-close svg{width:20px;height:20px;}
+  .modal-heart{
+    width:64px;height:64px;margin:0 auto 28px;
+    background:var(--pink);border-radius:50%;
+    display:grid;place-items:center;
+  }
+  .modal-heart svg{width:36px;height:36px;}
+  .modal-title{
+    font-family:"Gilda Display",serif;font-size:32px;
+    letter-spacing:-0.04em;line-height:1.1;margin-bottom:12px;
+  }
+  .modal-sub{
+    font-family:"Inter Tight",sans-serif;font-size:16px;
+    color:var(--gray);line-height:1.5;margin-bottom:32px;
+  }
+  .modal-email-box{
+    background:var(--pink);border-radius:14px;
+    padding:20px 24px;display:flex;align-items:center;justify-content:space-between;
+    gap:12px;margin-bottom:20px;
+  }
+  .modal-email-box span{
+    font-family:"Inter Tight",sans-serif;font-weight:500;font-size:17px;
+    color:var(--maroon);letter-spacing:-0.01em;
+  }
+  .modal-copy-btn{
+    background:var(--red);color:#fff;border-radius:10px;
+    padding:10px 18px;font-family:"Inter Tight",sans-serif;
+    font-weight:700;font-size:14px;letter-spacing:-0.01em;
+    transition:background .2s, transform .15s;
+    white-space:nowrap;
+  }
+  .modal-copy-btn:hover{background:#c91410;transform:translateY(-1px);}
+  .modal-copy-btn.copied{background:var(--maroon);}
+  .modal-note{
+    font-family:"Caveat",cursive;font-size:17px;color:var(--gray);
+  }
+
+  /* ============== ALSOOO section ============== */
+  .alsooo{
+    background:var(--pink);position:relative;
+    text-align:center;
+  }
+  .alsooo-track{ height: 320vh; position: relative; }
+  .alsooo-stage{
+    position: sticky; top: 0;
+    height: 100vh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding: 80px 112px; gap: 28px;
+  }
+  .alsooo h2{font-size:84px;max-width:760px;}
+  .alsooo p{max-width:760px;color:#000;}
+
+  /* ============== reveal anims (premium) ============== */
+  .reveal{
+    opacity:0;transform:translateY(28px);filter:blur(4px);
+    transition:opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo), filter .8s ease;
+  }
+  .reveal.in{opacity:1;transform:translateY(0);filter:blur(0);}
+
+  /* ============== section dividers ============== */
+  .sooo-stage::before, .jsyk-stage::before, .alsooo-stage::before, .cta-stage::before, .fun-stage::before{
+    content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:60px;height:1px;
+    background:currentColor;opacity:.15;
+  }
 
   /* ============== responsive ============== */
   @media (max-width: 768px){
-    .nav{padding:14px 24px;}
-    .hero{height:auto;min-height:100vh;padding:120px 24px 80px;}
+    .nav{top:8px;padding:6px 6px 6px 16px;max-width:calc(100% - 24px);gap:12px;height:56px;}
+    .nav-pill{height:40px;padding:0 16px;font-size:14px;}
+    .logo{width:34px;height:34px;}
+    .logo svg{width:30px;height:30px;}
+    .hero{min-height:100vh;padding:120px 24px 80px;}
     .hero h1{font-size:48px;}
-    .hero .photo{width:160px;height:168px;}
+    .hero .copy{width:100%;}
+    .hero .photo{width:160px;height:200px;border-radius:6px;}
     .hero .photo.left{left:10px;top:60px;}
     .hero .photo.right{right:10px;bottom:40px;}
-    .hero .copy{width:100%;}
     .sooo-stage{padding:80px 24px;}
     .sooo h2{font-size:48px;}
     .jsyk-stage{padding:80px 24px;}
@@ -299,6 +460,8 @@
     .cta-stage{padding:80px 24px;}
     .cta-section h2{font-size:48px;}
     .cta-section .buttons{flex-direction:column;gap:16px;align-items:center;}
+    .alsooo-stage{padding:80px 24px;}
+    .alsooo h2{font-size:48px;}
     .fun-stage{padding:80px 24px;}
     .more-fun h2{font-size:48px;}
     .footer{padding:80px 24px 60px;}
@@ -326,7 +489,7 @@
       </a>
       <div class="nav-pills">
         <a class="nav-pill active" href="#">Home</a>
-        <a class="nav-pill" href="#contact">Contact me</a>
+        <a class="nav-pill" href="#" id="contactBtn">Contact me</a>
       </div>
     </nav>
 
@@ -339,7 +502,7 @@
     <svg class="sprinkle" style="right:240px;top:200px;width:14px;height:14px;" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.35-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.65-7 10-11 10z"/></svg>
 
     <div class="copy reveal">
-      <h1 class="display">Heyy Enny, we need to talk</h1>
+      <h1 class="display">HEYY ENNY, WE NEED TO TALK</h1>
       <p class="body-text">Don't worry, it's the good kind… this is one of those personal projects I've been working on.</p>
       <button class="pill-btn cta" id="revealBtn">Okay fine, tell me</button>
     </div>
@@ -349,8 +512,8 @@
   <section class="sooo" id="sooo">
     <div class="sooo-track" id="sooo-track">
       <div class="sooo-stage">
-        <h2 class="display" id="sooo-title">Sooooo… here's the thing</h2>
-        <p class="body-text" id="sooo-body">I've been thinking about this for a while, and I figured rather than just casually asking, I could get creative about it. You're welcome lol.</p>
+        <h2 class="display" id="sooo-title">SOOOOO… HERE'S THE THING</h2>
+        <p class="body-text" id="sooo-body">I’ve been thinking about this for a while, and I figured rather than just casually asking, I could get creative about it. You're welcome lol.</p>
         <div class="progress" aria-hidden="true"><span id="sooo-bar"></span></div>
         <div class="scroll-hint" id="sooo-hint">scroll ↓</div>
       </div>
@@ -372,7 +535,20 @@
           </div>
         </div>
         <h2 class="display" id="jsyk-title">… JSYK</h2>
-        <p class="body-text" id="jsyk-text" style="color:var(--maroon);">You are my sunshine ✨ I want to be your person — not just the one you spend time with, but the one you can count on. I want to be someone who shows up for you, consistently, warmly, and see where this beautiful thing between us actually goes.</p>
+        <p class="body-text" id="jsyk-text" style="color:var(--maroon);">You are my sunshine ✨ 
+          <br>
+          <br>
+          I want to be your person — not just the one you spend time with, but the one you can count on. I want to be someone who shows up for you, consistently, warmly, and see where this beautiful thing between us actually goes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALSOOO — sticky scroll-driven word reveal -->
+  <section class="alsooo">
+    <div class="alsooo-track" id="alsooo-track">
+      <div class="alsooo-stage">
+        <h2 class="display" id="alsooo-title">ALSOOO</h2>
+        <p class="body-text" id="alsooo-body">Genuinely like how you engage with my jokes, the way you show up and make simple moments feel… not so simple. From the first time we met, at the arcade, conversations just felt easy, not forced or awkward and I see how open you are becoming and I like how i feel being around you and don't want to ignore that</p>
       </div>
     </div>
   </section>
@@ -382,8 +558,10 @@
     <div class="cta-track" id="cta-track">
       <div class="cta-stage">
         <div style="display:flex;flex-direction:column;align-items:center;gap:24px;">
-          <h2 class="display" id="cta-title">can i be your boyfriend? <span class="no-split" style="font-family:system-ui,sans-serif;">👩🏾‍❤️‍💋‍👨🏾</span></h2>
-          <p class="body-text sub" id="cta-sub">I like you a lot, and I think we can stop pretending this is casual and just make it official.</p>
+          <h2 class="display" id="cta-title">CAN I BE YOUR BOYFRIEND? <span class="no-split" style="font-family:system-ui,sans-serif;">👩🏾‍❤️‍💋‍👨🏾</span></h2>
+          <br>
+          <br>
+          <p class="body-text sub" id="cta-sub">Eniola Adeola Olajide... I like you a lot, and i think we can stop pretending this is casual and just make it official. </p>
         </div>
         <div class="buttons" id="cta-buttons">
           <button class="pill-btn" id="yesBtn">Yes, obviously</button>
@@ -405,15 +583,15 @@
   <!-- FOOTER -->
   <footer class="footer" id="contact">
     <div class="gallery reveal">
-      <div class="frame f1" style="background-image:url(assets/gallery-1.jpg);"></div>
-      <div class="frame f2" style="background-image:url(assets/locked-in.jpg);"></div>
-      <div class="frame f3" style="background-image:url(assets/gallery-1.jpg);"></div>
-      <div class="frame f4" style="background-image:url(assets/locked-in.jpg);"></div>
-      <div class="frame f5" style="background-image:url(assets/gallery-1.jpg);"></div>
+      <div class="frame f1" style="background-image:url(assets/Testimonial-img-1.png);"></div>
+      <div class="frame f2" style="background-image:url(assets/Testimonial-img-3.png);"></div>
+      <div class="frame f3" style="background-image:url(assets/Testimonial-img-5.png);"></div>
+      <div class="frame f4" style="background-image:url(assets/Testimonial-img-6.png);"></div>
+      <div class="frame f5" style="background-image:url(assets/Testimonial-img-7.png);"></div>
     </div>
 
     <div class="credits reveal">
-      <h3>designed and developed by osagie &amp; developer friend lol</h3>
+      <h3>DESIGNED AND DEVELOPED BY OSAGIE & DEVELOPER FRIEND LOL</h3>
       <p>( petition to start taking pictures together and have you send me more pictures too :D )</p>
       <p style="opacity:.75;">… and i promise i am not creepy. i had to go online and find some beautiful pieces of art to make the page look better — this is mostly what i could find ;)</p>
     </div>
@@ -440,6 +618,27 @@
       <div style="font-size:64px;line-height:1;letter-spacing:-0.04em;">yay 🎉</div>
       <div style="font-family:'Inter Tight',sans-serif;font-size:18px;margin-top:12px;color:#520000;">that's what i like to hear</div>
     </div>
+  </div>
+</div>
+
+<!-- =========== Contact modal =========== -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-heart">
+      <svg viewBox="0 0 49.794 49.775" fill="#e31713">
+        <path d="M 16.529 4.94 C 19.661 0.625 25.221 -1.443 30.792 1.123 C 37.042 4.002 39.597 11.089 37.02 17.205 C 36.658 18.063 36.147 19.082 35.557 20.175 C 35.806 20.642 36.027 21.128 36.219 21.628 C 41.485 20.79 46.879 23.258 49.004 29.012 C 51.387 35.468 48.182 42.286 42.035 44.788 C 39.825 45.687 36.033 46.692 32.44 47.552 C 28.791 48.424 25.162 49.189 23.174 49.597 C 22.939 49.646 22.634 49.71 22.358 49.744 C 22.05 49.782 21.625 49.806 21.142 49.691 C 20.5 49.539 19.909 49.198 19.456 48.719 C 19.115 48.357 18.923 47.976 18.802 47.69 C 18.694 47.435 18.597 47.139 18.522 46.912 C 17.881 44.986 16.729 41.46 15.66 37.864 C 14.982 35.581 14.315 33.196 13.839 31.156 C 10.455 29.331 6.88 27.291 4.92 25.806 C -0.396 21.779 -1.592 14.39 2.255 8.79 C 5.735 3.725 11.655 2.771 16.529 4.94 Z"/>
+      </svg>
+    </div>
+    <div class="modal-title">Let's talk</div>
+    <div class="modal-sub">Reach out anytime — I'd love to hear from you.</div>
+    <div class="modal-email-box">
+      <span>OsagieOsagiede01@gmail.com</span>
+      <button class="modal-copy-btn" id="copyEmail">Copy</button>
+    </div>
+    <div class="modal-note">… don't be a stranger ;)</div>
   </div>
 </div>
 
@@ -525,8 +724,9 @@
     progressOnly();
   })();
 
-  // ===== JSYK, CTA, More-fun =====
+  // ===== JSYK, ALSOOO, CTA, More-fun =====
   setupStickyReveal({ trackId: 'jsyk-track', targets: ['jsyk-title', 'jsyk-text'] });
+  setupStickyReveal({ trackId: 'alsooo-track', targets: ['alsooo-title', 'alsooo-body'] });
   setupStickyReveal({ trackId: 'cta-track', targets: ['cta-title', 'cta-sub'] });
   setupStickyReveal({ trackId: 'fun-track', targets: ['fun-title'] });
 
@@ -615,6 +815,21 @@
   styleEl.textContent = '@keyframes fall { from { transform: translateY(0) rotate(0deg); opacity:1; } to { transform: translateY(110vh) rotate(540deg); opacity: .85; } }';
   document.head.appendChild(styleEl);
 
+  // ===== Cinematic hero h1 character reveal =====
+  (function() {
+    var h1 = document.querySelector('.hero h1');
+    if (!h1) return;
+    var text = h1.textContent;
+    while (h1.firstChild) h1.removeChild(h1.firstChild);
+    for (var i = 0; i < text.length; i++) {
+      var span = document.createElement('span');
+      span.className = 'char';
+      span.style.animationDelay = (0.03 * i) + 's';
+      span.textContent = text[i] === ' ' ? '\u00A0' : text[i];
+      h1.appendChild(span);
+    }
+  })();
+
   // ===== Gentle float for hero photos =====
   document.querySelectorAll('.hero .photo').forEach(function(p, i) {
     var t = i * 1000;
@@ -631,6 +846,42 @@
   // ===== Scroll to top =====
   document.getElementById('scrollTopBtn').addEventListener('click', function() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ===== Contact modal =====
+  var contactModal = document.getElementById('contactModal');
+  var contactBtn = document.getElementById('contactBtn');
+  var modalClose = document.getElementById('modalClose');
+  var copyEmailBtn = document.getElementById('copyEmail');
+
+  contactBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    contactModal.classList.add('open');
+  });
+
+  modalClose.addEventListener('click', function() {
+    contactModal.classList.remove('open');
+  });
+
+  contactModal.addEventListener('click', function(e) {
+    if (e.target === contactModal) contactModal.classList.remove('open');
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && contactModal.classList.contains('open')) {
+      contactModal.classList.remove('open');
+    }
+  });
+
+  copyEmailBtn.addEventListener('click', function() {
+    navigator.clipboard.writeText('OsagieOsagiede01@gmail.com').then(function() {
+      copyEmailBtn.textContent = 'Copied!';
+      copyEmailBtn.classList.add('copied');
+      setTimeout(function() {
+        copyEmailBtn.textContent = 'Copy';
+        copyEmailBtn.classList.remove('copied');
+      }, 2000);
+    });
   });
 </script>
 </body>
