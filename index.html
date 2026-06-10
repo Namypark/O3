@@ -639,7 +639,7 @@
           <p class="body-text sub" id="cta-sub">Eniola Adeola Olajide... I like you a lot, and i think we can stop pretending this is casual and just make it official. </p>
         </div>
         <div class="buttons" id="cta-buttons">
-          <button class="pill-btn" id="yesBtn" style="text-transform:none;">Yes, obviously</button>
+          <button class="pill-btn" id="yesBtn" style="text-transform:none;">Yes</button>
           <button class="pill-btn gray no-btn" id="noBtn" style="text-transform:none;">No</button>
         </div>
       </div>
@@ -687,12 +687,26 @@
 </div>
 
 <!-- =========== confetti / celebration overlay =========== -->
-<div id="celebration" style="position:fixed;inset:0;pointer-events:none;z-index:1000;overflow:hidden;display:none;">
-  <div id="celebration-content" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-    <div style="background:#fff;padding:40px 60px;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25);text-align:center;font-family:'Gilda Display',serif;">
-      <div style="font-size:64px;line-height:1;letter-spacing:-0.04em;">yay 🎉</div>
-      <div style="font-family:'Inter Tight',sans-serif;font-size:18px;margin-top:12px;color:#520000;">that's what i like to hear</div>
+<div id="celebration" style="position:fixed;inset:0;pointer-events:none;z-index:1000;overflow:hidden;display:none;"></div>
+
+<!-- =========== Yes response modal =========== -->
+<div class="modal-overlay" id="yesModal">
+  <div class="modal-card">
+    <button class="modal-close" id="yesModalClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-heart">
+      <svg viewBox="0 0 49.794 49.775" fill="#e31713">
+        <path d="M 16.529 4.94 C 19.661 0.625 25.221 -1.443 30.792 1.123 C 37.042 4.002 39.597 11.089 37.02 17.205 C 36.658 18.063 36.147 19.082 35.557 20.175 C 35.806 20.642 36.027 21.128 36.219 21.628 C 41.485 20.79 46.879 23.258 49.004 29.012 C 51.387 35.468 48.182 42.286 42.035 44.788 C 39.825 45.687 36.033 46.692 32.44 47.552 C 28.791 48.424 25.162 49.189 23.174 49.597 C 22.939 49.646 22.634 49.71 22.358 49.744 C 22.05 49.782 21.625 49.806 21.142 49.691 C 20.5 49.539 19.909 49.198 19.456 48.719 C 19.115 48.357 18.923 47.976 18.802 47.69 C 18.694 47.435 18.597 47.139 18.522 46.912 C 17.881 44.986 16.729 41.46 15.66 37.864 C 14.982 35.581 14.315 33.196 13.839 31.156 C 10.455 29.331 6.88 27.291 4.92 25.806 C -0.396 21.779 -1.592 14.39 2.255 8.79 C 5.735 3.725 11.655 2.771 16.529 4.94 Z"/>
+      </svg>
     </div>
+    <div class="modal-title">Send in your response</div>
+    <div class="modal-sub">Tell me how you really feel</div>
+    <div class="modal-email-box">
+      <span>OsagieOsagiede01@gmail.com</span>
+      <button class="modal-copy-btn" id="copyEmailYes">Copy</button>
+    </div>
+    <div class="modal-note">… i'll be waiting ;)</div>
   </div>
 </div>
 
@@ -875,11 +889,15 @@
       heart.style.cssText = 'position:absolute;left:' + left + 'vw;top:-40px;color:' + color + ';font-size:' + size + 'px;animation:fall ' + dur + 's ' + delay + 's linear forwards;';
       overlay.appendChild(heart);
     }
+    // Show the response modal after a short delay
+    setTimeout(function() {
+      document.getElementById('yesModal').classList.add('open');
+    }, 800);
+    // Clean up confetti
     setTimeout(function() {
       overlay.style.display = 'none';
       var hearts = overlay.querySelectorAll('div');
       hearts.forEach(function(n) {
-        if (n.id === 'celebration-content' || n.closest('#celebration-content')) return;
         if (n.textContent === '\u2665') n.remove();
       });
     }, 4500);
@@ -955,6 +973,36 @@
       setTimeout(function() {
         copyEmailBtn.textContent = 'Copy';
         copyEmailBtn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+
+  // ===== Yes response modal =====
+  var yesModal = document.getElementById('yesModal');
+  var yesModalClose = document.getElementById('yesModalClose');
+  var copyEmailYes = document.getElementById('copyEmailYes');
+
+  yesModalClose.addEventListener('click', function() {
+    yesModal.classList.remove('open');
+  });
+
+  yesModal.addEventListener('click', function(e) {
+    if (e.target === yesModal) yesModal.classList.remove('open');
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && yesModal.classList.contains('open')) {
+      yesModal.classList.remove('open');
+    }
+  });
+
+  copyEmailYes.addEventListener('click', function() {
+    navigator.clipboard.writeText('OsagieOsagiede01@gmail.com').then(function() {
+      copyEmailYes.textContent = 'Copied!';
+      copyEmailYes.classList.add('copied');
+      setTimeout(function() {
+        copyEmailYes.textContent = 'Copy';
+        copyEmailYes.classList.remove('copied');
       }, 2000);
     });
   });
